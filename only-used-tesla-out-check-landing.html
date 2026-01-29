@@ -1,0 +1,1104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Only Used Tesla — OUT Check Verified Report</title>
+  <meta name="description" content="Generate a Tesla-verified report you can share in any listing. Verify ownership, options, warranty, alerts, and more — without sharing your password." />
+  <style>
+    :root{
+      /* Grayscale palette */
+      --bg: #0b0c0f;
+      --surface: #111319;
+      --surface-2:#171a22;
+      --surface-3:#1d202a;
+      --text: #f4f5f7;
+      --muted: #b9beca;
+      --muted-2:#8d93a3;
+      --line: rgba(255,255,255,.10);
+      --line-2: rgba(255,255,255,.14);
+      --shadow: 0 18px 50px rgba(0,0,0,.55);
+
+      --radius: 18px;
+      --radius-sm: 14px;
+
+      --max: 1120px;
+      --pad: 18px;
+
+      /* CTA (still grayscale) */
+      --cta: #f4f5f7;
+      --cta-text: #0b0c0f;
+      --cta-2: rgba(244,245,247,.10);
+      --cta-2-text: #f4f5f7;
+
+      --focus: rgba(244,245,247,.55);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(1200px 700px at 50% -10%, rgba(255,255,255,.10), transparent 60%),
+        radial-gradient(900px 500px at 15% 10%, rgba(255,255,255,.08), transparent 55%),
+        radial-gradient(900px 500px at 85% 18%, rgba(255,255,255,.06), transparent 55%),
+        var(--bg);
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible{
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+      border-radius: 12px;
+    }
+
+    .wrap{ max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+    .topbar{
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(10px);
+      background: rgba(11,12,15,.72);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 14px 0;
+      gap: 14px;
+    }
+    .brand{ display:flex; align-items:center; gap: 10px; min-width: 220px; }
+    .logo{
+      width: 34px; height: 34px; border-radius: 10px;
+      background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,.06));
+      border: 1px solid var(--line-2);
+      display:grid; place-items:center;
+      box-shadow: 0 10px 26px rgba(0,0,0,.35);
+      flex: 0 0 auto;
+    }
+    .brand strong{ font-weight: 800; letter-spacing: .06em; font-size: 12px; opacity:.95; }
+    .brand span{ color: var(--muted-2); font-size: 12px; display:block; margin-top: 2px; }
+
+    .navlinks{ display:flex; align-items:center; gap: 18px; }
+    .navlinks a{
+      color: var(--muted);
+      font-size: 14px;
+      padding: 8px 10px;
+      border-radius: 12px;
+    }
+    .navlinks a:hover{ background: rgba(255,255,255,.06); color: var(--text); }
+
+    .navcta{ display:flex; align-items:center; gap: 10px; }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap: 10px;
+      border: 1px solid var(--line-2);
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-weight: 700;
+      letter-spacing: .01em;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text);
+      transition: transform .06s ease, background .12s ease, border-color .12s ease;
+      user-select:none;
+      white-space: nowrap;
+    }
+    .btn:hover{ background: rgba(255,255,255,.07); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: var(--cta);
+      color: var(--cta-text);
+      border-color: rgba(244,245,247,.20);
+    }
+    .btn.primary:hover{ background: #ffffff; }
+    .btn.secondary{
+      background: var(--cta-2);
+      color: var(--cta-2-text);
+      border-color: rgba(244,245,247,.18);
+    }
+
+    .hamburger{
+      display:none;
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      border: 1px solid var(--line-2);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      place-items:center;
+      cursor:pointer;
+    }
+
+    /* Hero */
+    .hero{ padding: 54px 0 22px; }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+    .heroCard{
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .heroCard:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(700px 260px at 20% 0%, rgba(255,255,255,.10), transparent 60%);
+      pointer-events:none;
+      opacity:.9;
+    }
+    .heroInner{ position:relative; }
+    h1{
+      margin:0 0 10px;
+      font-size: clamp(28px, 4.6vw, 48px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+    .sub{
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 58ch;
+    }
+    .pillRow{ display:flex; flex-wrap:wrap; gap: 10px; margin: 14px 0 22px; }
+    .pill{
+      display:inline-flex; gap: 8px; align-items:center;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font-size: 13px;
+    }
+    .pill small{ color: var(--muted-2); font-weight: 700; letter-spacing: .02em; }
+    .ctaRow{ display:flex; flex-wrap:wrap; gap: 10px; align-items:center; }
+    .ctaNote{
+      margin-top: 10px;
+      color: var(--muted-2);
+      font-size: 12.5px;
+    }
+    .mini{
+      display:flex; gap: 12px; align-items:center; margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .mini svg{ opacity:.9; }
+
+    .sideCard{
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      display:flex; flex-direction:column; gap: 14px;
+    }
+    .switch{
+      display:flex; background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 6px;
+      gap: 6px;
+    }
+    .switch button{
+      flex:1;
+      background: transparent;
+      border: 0;
+      color: var(--muted);
+      font-weight: 800;
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+    }
+    .switch button[aria-selected="true"]{
+      background: rgba(255,255,255,.10);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .panel{
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,.03);
+      padding: 14px;
+    }
+    .panel h3{
+      margin: 0 0 6px;
+      font-size: 14px;
+      letter-spacing: .01em;
+    }
+    .panel p{ margin:0; color: var(--muted); font-size: 13.5px; }
+    .panel ul{
+      margin: 10px 0 0; padding: 0 0 0 18px;
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+    .kpiRow{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .kpi{
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      background: rgba(255,255,255,.03);
+    }
+    .kpi strong{ display:block; font-size: 13px; }
+    .kpi span{ color: var(--muted-2); font-size: 12px; }
+
+    /* Sections */
+    section{ padding: 24px 0; }
+    .sectionTitle{
+      display:flex; align-items:flex-end; justify-content:space-between; gap: 16px;
+      margin-bottom: 14px;
+    }
+    .sectionTitle h2{
+      margin:0;
+      font-size: 20px;
+      letter-spacing: -.01em;
+    }
+    .sectionTitle p{
+      margin:0;
+      color: var(--muted-2);
+      font-size: 13px;
+      max-width: 68ch;
+    }
+
+    .grid3{
+      display:grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .grid2{
+      display:grid; grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .card{
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.03);
+      padding: 16px;
+    }
+    .card h3{ margin: 0 0 6px; font-size: 15px; }
+    .card p{ margin: 0; color: var(--muted); font-size: 14px; }
+    .card .icon{
+      width: 38px; height: 38px; border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      display:grid; place-items:center;
+      margin-bottom: 10px;
+    }
+
+    /* Report preview */
+    .previewWrap{
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
+      overflow:hidden;
+      box-shadow: var(--shadow);
+    }
+    .previewTop{
+      padding: 16px;
+      display:flex; align-items:center; justify-content:space-between; gap: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .previewTop strong{ font-size: 14px; }
+    .previewTop span{ color: var(--muted-2); font-size: 12px; }
+    .previewBody{
+      padding: 16px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    .previewMock{
+      border: 1px dashed rgba(255,255,255,.25);
+      border-radius: 16px;
+      background: rgba(255,255,255,.02);
+      min-height: 260px;
+      display:grid;
+      place-items:center;
+      color: var(--muted-2);
+      text-align:center;
+      padding: 16px;
+    }
+
+    /* Pricing */
+    .priceGrid{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .priceCard{
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.03);
+      padding: 18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .badge{
+      display:inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      font-weight: 800;
+      font-size: 12px;
+    }
+    .price{
+      display:flex; align-items:baseline; gap: 8px; margin: 12px 0 6px;
+    }
+    .price strong{ font-size: 34px; letter-spacing: -0.02em; }
+    .price span{ color: var(--muted-2); font-size: 13px; }
+    .priceCard ul{
+      margin: 12px 0 0; padding: 0 0 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .priceCard .btn{ margin-top: 14px; width: 100%; }
+
+    /* FAQ */
+    .faq{
+      display:grid; gap: 10px;
+    }
+    details{
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.03);
+      padding: 12px 14px;
+    }
+    summary{
+      cursor:pointer;
+      list-style:none;
+      font-weight: 800;
+      font-size: 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    summary::-webkit-details-marker{ display:none; }
+    details p{ margin: 10px 0 0; color: var(--muted); font-size: 14px; }
+    .chev{ transition: transform .12s ease; opacity:.9; }
+    details[open] .chev{ transform: rotate(180deg); }
+
+    /* Footer */
+    footer{
+      padding: 28px 0 90px;
+      border-top: 1px solid var(--line);
+      margin-top: 22px;
+      color: var(--muted-2);
+      font-size: 12.5px;
+    }
+    .footGrid{
+      display:grid; grid-template-columns: 1.2fr .8fr; gap: 14px;
+    }
+    .footLinks{ display:flex; flex-wrap:wrap; gap: 10px; justify-content:flex-end; }
+    .footLinks a{ padding: 6px 10px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,.02); }
+
+    /* Mobile sticky CTA */
+    .stickyCta{
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      background: rgba(11,12,15,.82);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--line);
+      padding: 10px var(--pad);
+      display:none;
+      z-index: 60;
+    }
+    .stickyRow{
+      max-width: var(--max);
+      margin: 0 auto;
+      display:flex;
+      gap: 10px;
+    }
+    .stickyRow .btn{ flex: 1; padding: 12px 14px; }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .heroGrid{ grid-template-columns: 1fr; }
+      .previewBody{ grid-template-columns: 1fr; }
+      .footGrid{ grid-template-columns: 1fr; }
+      .footLinks{ justify-content:flex-start; }
+    }
+    @media (max-width: 860px){
+      .navlinks{ display:none; }
+      .hamburger{ display:grid; }
+      .stickyCta{ display:block; }
+      section{ padding: 18px 0; }
+      .grid3{ grid-template-columns: 1fr; }
+      .grid2{ grid-template-columns: 1fr; }
+      .kpiRow{ grid-template-columns: 1fr 1fr; }
+      .priceGrid{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 380px){
+      .kpiRow{ grid-template-columns: 1fr; }
+    }
+
+    /* Mobile menu */
+    .mobileMenu{
+      display:none;
+      border-top: 1px solid var(--line);
+      padding: 10px 0 14px;
+    }
+    .mobileMenu a{
+      display:block;
+      padding: 10px 10px;
+      border-radius: 12px;
+      color: var(--muted);
+    }
+    .mobileMenu a:hover{ background: rgba(255,255,255,.06); color: var(--text); }
+    .mobileMenu .row{ display:grid; gap: 6px; }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="wrap">
+      <div class="nav" aria-label="Primary">
+        <a class="brand" href="#top">
+          <div class="logo" aria-hidden="true">
+            <!-- Minimal grayscale logo mark -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6"/>
+              <path d="M8 13.3c1.3 1.6 3 2.4 4.9 2.4 2 0 3.7-.8 5.1-2.4" stroke="rgba(255,255,255,.75)" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M9.2 9.9h.01M14.8 9.9h.01" stroke="rgba(255,255,255,.75)" stroke-width="3.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <strong>ONLY USED TESLA</strong>
+            <span>OUT Check Verified Report</span>
+          </div>
+        </a>
+
+        <nav class="navlinks" aria-label="Page">
+          <a href="#for-sellers">For Sellers</a>
+          <a href="#for-buyers">For Buyers</a>
+          <a href="#whats-inside">What’s Inside</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+
+        <div class="navcta">
+          <a class="btn secondary" href="#pricing">See Pricing</a>
+          <a class="btn primary" href="https://connect.onlyusedtesla.com/?plan=standard" id="topCta">Generate Report</a>
+          <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke="rgba(255,255,255,.85)" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="mobileMenu" id="mobileMenu" aria-label="Mobile menu">
+        <div class="row">
+          <a href="#for-sellers">For Sellers</a>
+          <a href="#for-buyers">For Buyers</a>
+          <a href="#whats-inside">What’s Inside</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+          <a href="https://connect.onlyusedtesla.com/?plan=standard" class="btn primary" style="width:100%; margin-top:6px;">Generate Report</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main id="top" class="hero">
+    <div class="wrap">
+      <div class="heroGrid">
+        <div class="heroCard">
+          <div class="heroInner">
+            <h1>Sell (or buy) a used Tesla with confidence.</h1>
+            <p class="sub">
+              OUT Check is a <strong>Tesla-connected</strong> vehicle report you can share in any listing.
+              It helps buyers trust the car <em>and</em> the seller — without sharing your Tesla password.
+            </p>
+
+            <div class="pillRow" role="list" aria-label="Trust highlights">
+              <div class="pill" role="listitem">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 2l8 4v6c0 5-3.4 9.7-8 10-4.6-.3-8-5-8-10V6l8-4Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6"/>
+                  <path d="M8.5 12l2.1 2.2 5-5.3" stroke="rgba(255,255,255,.85)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <small>No password shared</small>
+              </div>
+              <div class="pill" role="listitem">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7 10V8a5 5 0 0 1 10 0v2" stroke="rgba(255,255,255,.85)" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M6.5 10h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6"/>
+                </svg>
+                <small>Revocable access</small>
+              </div>
+              <div class="pill" role="listitem">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M8 12h8M12 8v8" stroke="rgba(255,255,255,.85)" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M4 6h16v14H4V6Z" stroke="rgba(255,255,255,.85)" stroke-width="1.6"/>
+                </svg>
+                <small>Shareable link + QR</small>
+              </div>
+            </div>
+
+            <div class="ctaRow">
+              <a class="btn primary" href="https://connect.onlyusedtesla.com/?plan=standard">Generate Verified Report</a>
+              <a class="btn secondary" href="#for-buyers">I’m buying — Request one</a>
+            </div>
+            <div class="ctaNote">Typical flow: connect → generate → share the link in Facebook Marketplace, Autotrader, Craigslist, etc.</div>
+
+            <div class="mini" aria-label="Disclosure">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10Z" stroke="rgba(255,255,255,.65)" stroke-width="1.6"/>
+                <path d="M12 7.2v.2M12 10v7" stroke="rgba(255,255,255,.65)" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              <span>Only Used Tesla is independent and not affiliated with Tesla. We use the Tesla Fleet API with your authorization.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right side: Seller/Buyer switcher -->
+        <aside class="sideCard" aria-label="Quick explainer">
+          <div class="switch" role="tablist" aria-label="Choose your path">
+            <button id="tabSeller" role="tab" aria-selected="true" aria-controls="panelSeller">I’m Selling</button>
+            <button id="tabBuyer" role="tab" aria-selected="false" aria-controls="panelBuyer">I’m Buying</button>
+          </div>
+
+          <div class="panel" id="panelSeller" role="tabpanel" aria-label="Selling panel">
+            <h3>Make your listing instantly more trustworthy</h3>
+            <p>Buyers want proof. OUT Check helps you answer questions up front.</p>
+            <ul>
+              <li>Owner verification (when available)</li>
+              <li>Warranty status + key options</li>
+              <li>Alerts & service status snapshot</li>
+              <li>Shareable report link + QR</li>
+            </ul>
+          </div>
+
+          <div class="panel" id="panelBuyer" role="tabpanel" aria-label="Buying panel" hidden>
+            <h3>Ask the seller for a Tesla-connected report</h3>
+            <p>Send a request link. The seller generates the report from their Tesla account.</p>
+            <ul>
+              <li>Confirms the seller has legit access</li>
+              <li>See warranty, options, alerts</li>
+              <li>Reduces scams & “too good to be true” listings</li>
+            </ul>
+          </div>
+
+          <div class="kpiRow" aria-label="Quick stats">
+            <div class="kpi">
+              <strong>Fast</strong>
+              <span>Generate in minutes</span>
+            </div>
+            <div class="kpi">
+              <strong>Simple</strong>
+              <span>Mobile-friendly report</span>
+            </div>
+          </div>
+
+          <div class="panel" aria-label="Security promise">
+            <h3>Security promise</h3>
+            <p>We never see your Tesla password. You authenticate through Tesla’s sign-in flow and can revoke access anytime.</p>
+          </div>
+
+          <a class="btn primary" href="https://connect.onlyusedtesla.com/?plan=standard" aria-label="Generate verified report button">Generate Report</a>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <!-- For Sellers -->
+  <section id="for-sellers">
+    <div class="wrap">
+      <div class="sectionTitle">
+        <div>
+          <h2>For Sellers</h2>
+          <p>Add a “verified report” link to your listing so serious buyers feel comfortable reaching out.</p>
+        </div>
+      </div>
+
+      <div class="grid3">
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2l8 4v6c0 5-3.4 9.7-8 10-4.6-.3-8-5-8-10V6l8-4Z" stroke="rgba(255,255,255,.8)" stroke-width="1.6"/>
+              <path d="M9 12l2 2 4.8-5" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Reduce “Is this legit?” messages</h3>
+          <p>Buyers see a time-stamped report pulled through Tesla authorization — not a screenshot.</p>
+        </div>
+
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M4 7h16M4 12h10M4 17h16" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M18 10v8" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Answer key questions upfront</h3>
+          <p>Warranty, options, alerts, and service status in one clean link you can reuse anywhere.</p>
+        </div>
+
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3v10" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M7 13l5 5 5-5" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 21h16" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Easy to share</h3>
+          <p>Share a link or QR code in DMs, a listing, or printed on a window sheet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- For Buyers -->
+  <section id="for-buyers">
+    <div class="wrap">
+      <div class="sectionTitle">
+        <div>
+          <h2>For Buyers</h2>
+          <p>Found a Tesla on Facebook Marketplace? Ask the seller for an OUT Check report before you waste time.</p>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M7 7h10v10H7V7Z" stroke="rgba(255,255,255,.8)" stroke-width="1.6"/>
+              <path d="M7 11h10" stroke="rgba(255,255,255,.8)" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M9 9h.01M15 9h.01M9 14h.01M15 14h.01" stroke="rgba(255,255,255,.8)" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Send a request link</h3>
+          <p>Share a link to the seller. They generate the report from their Tesla account — you get a clean report link back.</p>
+        </div>
+
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M6 12h12" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M12 6v12" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M4 4h16v16H4V4Z" stroke="rgba(255,255,255,.8)" stroke-width="1.6"/>
+            </svg>
+          </div>
+          <h3>Spot red flags faster</h3>
+          <p>Warranty status, options, alerts, and a time-stamped snapshot help you compare listings and avoid scams.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:14px; display:flex; flex-wrap:wrap; gap:10px;">
+        <a class="btn primary" href="https://connect.onlyusedtesla.com/?plan=standard" aria-label="Generate report (seller) CTA">Seller: Generate Report</a>
+        <a class="btn secondary" href="#pricing" aria-label="See pricing CTA">Buyer: Choose a plan</a>
+        <!-- Optional: replace the link below with your real buyer-request flow -->
+        <a class="btn secondary" href="#" onclick="alert('Placeholder: connect this button to your “request link” flow.'); return false;">Buyer: Create Request Link</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how-it-works">
+    <div class="wrap">
+      <div class="sectionTitle">
+        <div>
+          <h2>How it works</h2>
+          <p>Designed for speed: scam prevention, clarity, and easy sharing.</p>
+        </div>
+      </div>
+
+      <div class="grid3">
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2Z" stroke="rgba(255,255,255,.8)" stroke-width="1.6"/>
+              <path d="M8 12h8" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>1) Connect (securely)</h3>
+          <p>Sign in through Tesla’s authorization flow. We do not see your Tesla password.</p>
+        </div>
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M4 7h16M4 12h16M4 17h10" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>2) Generate the report</h3>
+          <p>We pull key vehicle details and produce a time-stamped report optimized for buyers.</p>
+        </div>
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 15l-4-4 4-4" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 20V4" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>3) Share anywhere</h3>
+          <p>Send the report link in DMs, add it to a listing, or share the QR code in person.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What's inside -->
+  <section id="whats-inside">
+    <div class="wrap">
+      <div class="sectionTitle">
+        <div>
+          <h2>What’s inside the OUT Check report</h2>
+          <p>Clear sections buyers care about. (Exact items may vary by vehicle/account permissions.)</p>
+        </div>
+      </div>
+
+      <div class="grid3">
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2l8 4v6c0 5-3.4 9.7-8 10-4.6-.3-8-5-8-10V6l8-4Z" stroke="rgba(255,255,255,.8)" stroke-width="1.6"/>
+            </svg>
+          </div>
+          <h3>Owner verification</h3>
+          <p>Shows that the report was generated through Tesla authorization. Owner-level verification displayed when available.</p>
+        </div>
+
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M6 5h12v16H6V5Z" stroke="rgba(255,255,255,.8)" stroke-width="1.6"/>
+              <path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4" stroke="rgba(255,255,255,.8)" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Vehicle summary</h3>
+          <p>Model, year/trim (when available), drivetrain, factory options, and key configuration details.</p>
+        </div>
+
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M6 12h12" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M10 8h4M10 16h4" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M4 6h16v12H4V6Z" stroke="rgba(255,255,255,.8)" stroke-width="1.6"/>
+            </svg>
+          </div>
+          <h3>Warranty status</h3>
+          <p>Active vs expired coverage (vehicle + battery/drive unit where supported).</p>
+        </div>
+
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 8v5l3 2" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10Z" stroke="rgba(255,255,255,.8)" stroke-width="1.6"/>
+            </svg>
+          </div>
+          <h3>Time-stamped snapshot</h3>
+          <p>Odometer and key signals at the time the report was generated.</p>
+        </div>
+
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 9v4" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M12 17h.01" stroke="rgba(255,255,255,.8)" stroke-width="3" stroke-linecap="round"/>
+              <path d="M10.3 4.7 3 18h18L13.7 4.7a2 2 0 0 0-3.4 0Z" stroke="rgba(255,255,255,.8)" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Alerts & service status</h3>
+          <p>Recent alerts plus service status indicators (not a full repair history).</p>
+        </div>
+
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M7 13h10l-1.5 7h-7L7 13Z" stroke="rgba(255,255,255,.8)" stroke-width="1.6"/>
+              <path d="M9 13V7a3 3 0 0 1 6 0v6" stroke="rgba(255,255,255,.8)" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M8 6h8" stroke="rgba(255,255,255,.8)" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Charging insights</h3>
+          <p>Optional charging summary sections (privacy-redacted by default).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Report preview -->
+  <section id="preview">
+    <div class="wrap">
+      <div class="sectionTitle">
+        <div>
+          <h2>Preview the report</h2>
+          <p>Drop in a demo report image, PDF embed, or interactive preview here.</p>
+        </div>
+      </div>
+
+      <div class="previewWrap">
+        <div class="previewTop">
+          <div>
+            <strong>OUT Check — Demo Preview</strong><br />
+            <span>Placeholder section (you’ll replace this with your demo report)</span>
+          </div>
+          <a class="btn secondary" href="https://connect.onlyusedtesla.com/?plan=standard">Generate mine</a>
+        </div>
+        <div class="previewBody">
+          <div class="previewMock">
+            <div>
+              <strong style="color:var(--text);">Add your report preview here</strong><br />
+              <span style="display:block; margin-top:6px;">Suggestion: an image or iframe embed of a sample report.</span>
+              <div style="margin-top:12px; color:var(--muted-2); font-size:12px;">
+                Tip: keep the first screen on mobile showing “Owner Verified”, “Warranty”, and “Options”.
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>What buyers look for in 10 seconds</h3>
+            <p style="margin-bottom:10px;">Use your preview to show these “scan moments”:</p>
+            <ul style="margin:0; padding-left:18px; color:var(--muted); font-size:14px;">
+              <li><strong>Verification</strong> (time-stamped, Tesla-connected)</li>
+              <li><strong>Warranty</strong> (active vs expired)</li>
+              <li><strong>Options</strong> (trim, packages, features)</li>
+              <li><strong>Alerts</strong> (recent alerts list)</li>
+              <li><strong>Snapshot</strong> (odometer at generation time)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Security & privacy -->
+  <section id="security">
+    <div class="wrap">
+      <div class="sectionTitle">
+        <div>
+          <h2>Security & privacy (built for real sellers)</h2>
+          <p>We keep this simple and respectful: verify what matters, avoid what doesn’t.</p>
+        </div>
+      </div>
+
+      <div class="grid3">
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M7 10V8a5 5 0 0 1 10 0v2" stroke="rgba(255,255,255,.8)" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M6 10h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2Z" stroke="rgba(255,255,255,.8)" stroke-width="1.6"/>
+            </svg>
+          </div>
+          <h3>No password sharing</h3>
+          <p>Authentication happens through Tesla’s sign-in flow. You never type your password into our site.</p>
+        </div>
+
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3v18" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M5 12h14" stroke="rgba(255,255,255,.8)" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M6.5 6.5h11v11h-11v-11Z" stroke="rgba(255,255,255,.8)" stroke-width="1.6"/>
+            </svg>
+          </div>
+          <h3>You control access</h3>
+          <p>You can revoke access any time. Reports can also be time-limited or regenerated for freshness.</p>
+        </div>
+
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2Z" stroke="rgba(255,255,255,.8)" stroke-width="1.6"/>
+              <path d="M8 12.5c1.2 1.8 2.9 2.7 4.8 2.7 2.1 0 3.9-.9 5.2-2.7" stroke="rgba(255,255,255,.8)" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Privacy-first defaults</h3>
+          <p>We avoid sensitive personal details by default (like exact location). You choose what to share.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing">
+    <div class="wrap">
+      <div class="sectionTitle">
+        <div>
+          <h2>Simple pricing</h2>
+          <p>Start with a report that proves legitimacy. Add enhanced specs if you want the full factory detail.</p>
+        </div>
+      </div>
+
+      <div class="priceGrid">
+        <div class="priceCard">
+          <span class="badge">Standard</span>
+          <div class="price">
+            <strong>$20</strong>
+            <span>per report</span>
+          </div>
+          <div style="color:var(--muted); font-size:14px;">
+            Best for most sellers. Includes a shareable link + QR code.
+          </div>
+          <ul>
+            <li>Verified report link (time-stamped)</li>
+            <li>Warranty status</li>
+            <li>Vehicle summary + options</li>
+            <li>Alerts + service status snapshot</li>
+            <li>Odometer snapshot</li>
+          </ul>
+          <a class="btn primary" href="https://connect.onlyusedtesla.com/?plan=standard">Buy Standard</a>
+        </div>
+
+        <div class="priceCard">
+          <span class="badge">Enhanced</span>
+          <div class="price">
+            <strong>$29</strong>
+            <span>per report</span>
+          </div>
+          <div style="color:var(--muted); font-size:14px;">
+            For “serious buyer” listings. Adds factory specs recorded at time of sale.
+          </div>
+          <ul>
+            <li>Everything in Standard</li>
+            <li><strong>Factory specs</strong> (time-of-sale record)</li>
+            <li>Expanded configuration details</li>
+            <li>Better “compare cars” clarity</li>
+          </ul>
+          <a class="btn primary" href="https://connect.onlyusedtesla.com/?plan=enhanced">Buy Enhanced</a>
+        </div>
+      </div>
+
+      <div style="margin-top:12px; color:var(--muted-2); font-size:12.5px;">
+        Tip: Keep pricing simple early. You can A/B test $19/$29 vs $20/$30 later.
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="sectionTitle">
+        <div>
+          <h2>FAQ</h2>
+          <p>Quick answers for the “wait… how does this work?” questions.</p>
+        </div>
+      </div>
+
+      <div class="faq">
+        <details>
+          <summary>Do I have to share my Tesla password?
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" stroke="rgba(255,255,255,.85)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </summary>
+          <p>No. You authenticate through Tesla’s authorization flow. We never ask for (or see) your Tesla password.</p>
+        </details>
+
+        <details>
+          <summary>Can a scammer generate a report for a car they don’t have?
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" stroke="rgba(255,255,255,.85)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </summary>
+          <p>To generate a Tesla-connected report, someone must authorize access from a Tesla account that has access to the vehicle. Owner-level verification is shown when available.</p>
+        </details>
+
+        <details>
+          <summary>Will the report show my home address or exact location?
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" stroke="rgba(255,255,255,.85)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </summary>
+          <p>By default, we avoid sensitive personal details like exact location. You choose what to share with buyers.</p>
+        </details>
+
+        <details>
+          <summary>Is this the same as Carfax?
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" stroke="rgba(255,255,255,.85)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </summary>
+          <p>No — OUT Check is a Tesla-connected report focused on verifying access and summarizing vehicle details buyers ask about (warranty, options, alerts, snapshots). It does not replace title/accident history services.</p>
+        </details>
+
+        <details>
+          <summary>How long is the report valid?
+            <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" stroke="rgba(255,255,255,.85)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </summary>
+          <p>Reports are time-stamped. Many sellers regenerate right before a serious buyer visit so the snapshot is fresh.</p>
+        </details>
+      </div>
+
+      <div style="margin-top:14px; display:flex; flex-wrap:wrap; gap: 10px;">
+        <a class="btn primary" href="https://connect.onlyusedtesla.com/?plan=standard">Generate Verified Report</a>
+        <a class="btn secondary" href="#preview">See Preview</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="wrap">
+      <div class="footGrid">
+        <div>
+          <strong style="color:var(--text);">Only Used Tesla</strong><br />
+          OUT Check Verified Report — built for used Tesla buyers & sellers.<br />
+          <span style="display:block; margin-top:10px;">
+            Disclaimer: Only Used Tesla is independent and not affiliated with Tesla, Inc. Tesla, Model S/3/X/Y and other marks are trademarks of Tesla, Inc.
+          </span>
+        </div>
+        <div class="footLinks" aria-label="Footer links">
+          <a href="#top">Top</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+          <a href="mailto:support@onlyusedtesla.com">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Sticky CTA for mobile -->
+  <div class="stickyCta" aria-label="Sticky call to action">
+    <div class="stickyRow">
+      <a class="btn primary" href="https://connect.onlyusedtesla.com/?plan=standard">Generate</a>
+      <a class="btn secondary" href="#for-buyers">Request</a>
+    </div>
+  </div>
+
+  <script>
+    // Mobile menu toggle
+    const burger = document.getElementById('hamburger');
+    const menu = document.getElementById('mobileMenu');
+    if (burger && menu){
+      burger.addEventListener('click', () => {
+        const expanded = burger.getAttribute('aria-expanded') === 'true';
+        burger.setAttribute('aria-expanded', String(!expanded));
+        menu.style.display = expanded ? 'none' : 'block';
+      });
+      // close menu when clicking a link
+      menu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          menu.style.display = 'none';
+          burger.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    // Seller/Buyer switcher
+    const tabSeller = document.getElementById('tabSeller');
+    const tabBuyer  = document.getElementById('tabBuyer');
+    const panelSeller = document.getElementById('panelSeller');
+    const panelBuyer  = document.getElementById('panelBuyer');
+
+    function selectTab(which){
+      const isSeller = which === 'seller';
+      tabSeller.setAttribute('aria-selected', String(isSeller));
+      tabBuyer.setAttribute('aria-selected', String(!isSeller));
+      panelSeller.hidden = !isSeller;
+      panelBuyer.hidden  = isSeller;
+    }
+    tabSeller?.addEventListener('click', () => selectTab('seller'));
+    tabBuyer?.addEventListener('click', () => selectTab('buyer'));
+  </script>
+</body>
+</html>
